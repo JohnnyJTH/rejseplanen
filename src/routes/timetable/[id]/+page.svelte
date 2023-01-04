@@ -10,7 +10,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading cursor-pointer">
 				<h2 class="panel-title" data-toggle="collapse" data-target="#collapseStog">
-					S-Tog
+                    <i style="vertical-align: middle; display: inline-block; height: 30px; width: 30px; background-image: url('/stog.svg')" /> S-Tog
 				</h2>
 			</div>
 			<div id="collapseStog" class="panel-collapse collapse in" style="visibility: visible !important"> <!-- visibility: visible fordi bootstrap er whack -->
@@ -28,7 +28,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading cursor-pointer">
 				<h2 class="panel-title" data-toggle="collapse" data-target="#collapseBus">
-					Bus
+					<i style="vertical-align: middle; display: inline-block; height: 30px; width: 30px; background-image: url('/bus.svg')" /> Bus
 				</h2>
 			</div>
 			<div id="collapseBus" class="panel-collapse collapse in" style="visibility: visible !important"> <!-- visibility: visible fordi bootstrap er whack -->

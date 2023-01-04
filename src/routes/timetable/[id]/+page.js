@@ -61,7 +61,7 @@ export async function load({ fetch, params }) {
       const newDeparture = {
         ...departure,
         color: BusColors[departure.type],
-        colorText: departure.type
+        colorText: departure.line
       }
       bus.push(newDeparture)
     }
