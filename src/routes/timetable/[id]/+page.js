@@ -46,8 +46,28 @@ export async function load({ fetch, params }) {
   if (data.DepartureBoard.Departure.length === 0) {
     throw error(404, 'No departures');
   }
-  const stog = data.DepartureBoard.Departure.filter((item) => item.type === 'S');
+  let stog = []
+  let bus = []
+  for (let i = 0; i < data.DepartureBoard.Departure.length; i++) {
+    let departure = data.DepartureBoard.Departure[i]
+    if (departure.type === "S") {
+      const newDeparture = {
+        ...departure,
+        color: STogColors[departure.line],
+        colorText: departure.line
+      }
+      stog.push(newDeparture)
+    } else if (departure.type === "BUS" || departure.type === "EXB") {
+      const newDeparture = {
+        ...departure,
+        color: BusColors[departure.type],
+        colorText: departure.type
+      }
+      bus.push(newDeparture)
+    }
+  }
   return {
-    stog: stog
+    stog,
+    bus
   };
 }

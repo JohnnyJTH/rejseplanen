@@ -1,23 +1,47 @@
 <script>
+	import Badge from "../../../components/Badge.svelte";
+	import Time from "../../../components/Time.svelte";
+
 	export let data;
 </script>
 
 <div class="container">
-    
-    <div class="accordion accordion-flush p-12" id="departureAccordion">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headerStog">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStog" aria-expanded="true" aria-controls="collapseStog">
-                    S-tog
-                  </button>            
-            </h2>
-            <div id="collapseStog" class="accordion-collapse collapse show" aria-labelledby="headerStog" data-bs-parent="#departureAccordion">
-                <div class="accordion-body">
-                    {#each data["stog"] as departure}
-                        <strong>{departure["name"]}</strong>
-                    {/each}
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="panel-group">
+		<div class="panel panel-default">
+			<div class="panel-heading cursor-pointer">
+				<h2 class="panel-title" data-toggle="collapse" data-target="#collapseStog">
+					S-Tog
+				</h2>
+			</div>
+			<div id="collapseStog" class="panel-collapse collapse in" style="visibility: visible !important"> <!-- visibility: visible fordi bootstrap er whack -->
+				<ul class="list-group">
+					{#each data['stog'] as STogDeparture}
+						<li class="list-group-item">
+                            <Badge color={STogDeparture['color']} text={STogDeparture['colorText']} />
+                            {STogDeparture['direction']}
+                            <Time time={STogDeparture['time']} />
+                        </li>
+					{/each}
+                </ul>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading cursor-pointer">
+				<h2 class="panel-title" data-toggle="collapse" data-target="#collapseBus">
+					Bus
+				</h2>
+			</div>
+			<div id="collapseBus" class="panel-collapse collapse in" style="visibility: visible !important"> <!-- visibility: visible fordi bootstrap er whack -->
+				<ul class="list-group">
+					{#each data['bus'] as BusDeparture}
+						<li class="list-group-item">
+                            <Badge color={BusDeparture['color']} text={BusDeparture['colorText']} />
+                            {BusDeparture['direction']}
+                            <Time time={BusDeparture['time']} />
+                        </li>
+					{/each}
+                </ul>
+			</div>
+		</div>
+	</div>
 </div>
