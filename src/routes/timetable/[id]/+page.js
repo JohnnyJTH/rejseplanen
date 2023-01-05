@@ -1,4 +1,26 @@
 import { error } from '@sveltejs/kit';
+import moment from 'moment/moment';
+
+moment.locale(
+  'da',
+  {
+    relativeTime: {
+      future: 'om %s',
+      past: 'for %s siden',
+      s: 'få sekunder',
+      m: '1',
+      mm: '%d',
+      h: '1 time',
+      hh: '%d timer',
+      d: '1 dag',
+      dd: '%d dage',
+      M: '1 måned',
+      MM: '%d måneder',
+      y: '1 år',
+      yy: '%d år'
+    },
+  }
+);
 
 const STogColors = {
   'A': '#4AA5E5',
@@ -50,6 +72,13 @@ export async function load({ fetch, params }) {
   let bus = []
   for (let i = 0; i < data.DepartureBoard.Departure.length; i++) {
     let departure = data.DepartureBoard.Departure[i]
+    if (departure.rtTime) {
+      let originalTime = moment(`${departure.date} ${departure.time}`, "DD.MM.GG hh:mm")
+      let realTime = moment(`${departure.rtDate} ${departure.rtTime}`, "DD.MM.GG hh:mm")
+
+      departure.delay = originalTime.to(realTime, true);
+    }
+
     if (departure.type === "S") {
       const newDeparture = {
         ...departure,
