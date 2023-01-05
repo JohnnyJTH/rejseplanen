@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 import moment from 'moment/moment';
+import {idToName} from '../../../data/stations.js'
 
 moment.locale(
   'da',
@@ -60,7 +61,13 @@ export async function load({ fetch, params }) {
     throw error(403, 'Station IDs must be integers');
   }
 
-  const response = await fetch(`http://xmlopen.rejseplanen.dk/bin/rest.exe/departureBoard?id=${params.id}&format=json`);
+  const stationId = Number(params.id);
+  const stationName = idToName[stationId.toString()]
+  if (!stationName) {
+    throw error(404, 'Station not found');
+  }
+
+  const response = await fetch(`http://xmlopen.rejseplanen.dk/bin/rest.exe/departureBoard?id=${stationId}&format=json`);
   const data = await response.json();
   if (data.DepartureBoard.error) {
     throw error(500, data.DepartureBoard.error);
@@ -160,6 +167,7 @@ export async function load({ fetch, params }) {
     }
   }
   return {
+    stationName,
     stog,
     bus,
     train,

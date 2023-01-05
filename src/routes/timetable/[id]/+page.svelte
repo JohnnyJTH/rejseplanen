@@ -6,6 +6,8 @@
 </script>
 
 <div class="container">
+	<h1 style="font-size: 40px">{data['stationName']}</h1>
+	<br />
 	<div class="panel-group" role="tablist" aria-multiselectable="true">
 		{#if data['stog'].length > 0}
 			<div class="panel panel-default">
@@ -69,7 +71,6 @@
 					role="tabpanel"
 					aria-labelledby="headingBus"
 				>
-					<!-- visibility: visible fordi bootstrap er whack -->
 					<ul class="list-group">
 						{#each data['bus'] as BusDeparture}
 							<li class="list-group-item">
@@ -106,7 +107,6 @@
 					role="tabpanel"
 					aria-labelledby="headingTrain"
 				>
-					<!-- visibility: visible fordi bootstrap er whack -->
 					<ul class="list-group">
 						{#each data['train'] as TrainDeparture}
 							<li class="list-group-item">
@@ -143,7 +143,6 @@
 					role="tabpanel"
 					aria-labelledby="headingMetro"
 				>
-					<!-- visibility: visible fordi bootstrap er whack -->
 					<ul class="list-group">
 						{#each data['metro'] as MetroDeparture}
 							<li class="list-group-item">
@@ -159,10 +158,18 @@
 		{#if data['ferry'].length > 0}
 			<div class="panel panel-default">
 				<div class="panel-heading active" role="tab" id="headingFerry">
-					<h2 class="panel-title" data-toggle="collapse" data-target="#collapseFerry">
-						<i
-							style="vertical-align: middle; display: inline-block; height: 30px; width: 30px; background-image: url('/bus.svg')"
-						/> Ferry
+					<h2 class="panel-title">
+						<a
+							role="button"
+							data-toggle="collapse"
+							href="#collapseFerry"
+							aria-expanded="true"
+							aria-controls="collapseFerry"
+						>
+							<i
+								style="vertical-align: middle; display: inline-block; height: 30px; width: 30px; background-image: url('/bus.svg')"
+							/> Ferry
+						</a>
 					</h2>
 				</div>
 				<div
@@ -172,7 +179,6 @@
 					role="tabpanel"
 					aria-labelledby="headingFerry"
 				>
-					<!-- visibility: visible fordi bootstrap er whack -->
 					<ul class="list-group">
 						{#each data['ferry'] as FerryDeparture}
 							<li class="list-group-item">
