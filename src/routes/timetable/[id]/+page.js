@@ -167,3 +167,5 @@ export async function load({ fetch, params }) {
     ferry
   };
 }
+
+export const ssr = false;
