@@ -19,7 +19,7 @@
 						<li class="list-group-item">
                             <Badge color={STogDeparture['color']} text={STogDeparture['colorText']} />
                             {STogDeparture['direction']}
-                            <Time time={STogDeparture['time']} />
+                            <Time time={STogDeparture['time']} delay={STogDeparture['delay']} />
                         </li>
 					{/each}
                 </ul>
@@ -37,7 +37,7 @@
 						<li class="list-group-item">
                             <Badge color={BusDeparture['color']} text={BusDeparture['colorText']} />
                             {BusDeparture['direction']}
-                            <Time time={BusDeparture['time']} />
+                            <Time time={BusDeparture['time']} delay={BusDeparture['delay']} />
                         </li>
 					{/each}
                 </ul>
