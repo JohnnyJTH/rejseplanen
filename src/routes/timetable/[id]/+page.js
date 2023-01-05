@@ -67,7 +67,7 @@ export async function load({ fetch, params }) {
     throw error(404, 'Station not found');
   }
 
-  const response = await fetch(`http://xmlopen.rejseplanen.dk/bin/rest.exe/departureBoard?id=${stationId}&format=json`);
+  const response = await fetch(`https://xmlopen.rejseplanen.dk/bin/rest.exe/departureBoard?id=${stationId}&format=json`);
   const data = await response.json();
   if (data.DepartureBoard.error) {
     throw error(500, data.DepartureBoard.error);
