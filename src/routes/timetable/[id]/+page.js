@@ -48,12 +48,13 @@ const MetroColors = {
   'M4': '#3CB4EF',
 }
 const OtherColors = {
-  'REG': '#F4C443',
+  'REG': '#50b748',
   'IC': '#EE4230',
   'LYN': '#FCBB58',
   'SJ': '#767676',
   'Lokalbane': '#061D42',
-  'Letbane': '#31546F'
+  'Letbane': '#31546F',
+  'Pågatog': '#6263AD'
 }
 
 export async function load({ fetch, params }) {
@@ -116,12 +117,28 @@ export async function load({ fetch, params }) {
         })
         break;
       case "TOG":
-        train.push({
-          ...departure,
-          color: OtherColors["SJ"],
-          // colorText: departure.name.replace("SJ ", "")
-          colorText: departure.name
-        })
+        if (departure.name.startsWith("Lokalbane")) {
+          train.push({
+            ...departure,
+            color: OtherColors["Lokalbane"],
+            // colorText: departure.line.replace("Lokalbane ", "")
+            colorText: departure.line
+          })
+        } else if (departure.name.startsWith("SJ")) {
+          train.push({
+            ...departure,
+            color: OtherColors["SJ"],
+            // colorText: departure.name.replace("SJ ", "")
+            colorText: departure.name
+          })
+        } else if (departure.name.startsWith("Pågatog")) {
+          train.push({
+            ...departure,
+            color: OtherColors["Pågatog"],
+            // colorText: departure.name.replace("Pågatog ", "")
+            colorText: departure.name
+          })
+        }
         break;
       case "IC":
         train.push({
@@ -145,6 +162,13 @@ export async function load({ fetch, params }) {
           color: OtherColors["LYN"],
           // colorText: departure.name.replace("ICL ", "").replace("ICL+ ", "")
           colorText: departure.name
+        })
+        break;
+      case "LET":
+        train.push({
+          ...departure,
+          color: OtherColors["Letbane"],
+          colorText: departure.line
         })
         break;
       case "NB":
