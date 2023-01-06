@@ -5,8 +5,14 @@
 	export let data;
 </script>
 
+<svelte:head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</svelte:head>
+
 <div class="container">
-	<h1 style="font-size: 40px">{data['stationName']}</h1>
+	<h1 class="text-5xl">{data['stationName']}</h1>
 	<br />
 	<div class="panel-group" role="tablist" aria-multiselectable="true">
 		{#if data['stog'].length > 0}
