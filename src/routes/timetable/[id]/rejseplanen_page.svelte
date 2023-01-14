@@ -1,12 +1,7 @@
 <script>
-	import { page } from '$app/stores';
 	import Badge from '../../../components/Badge.svelte';
 	import Time from '../../../components/Time.svelte';
-	import { fetchDepartures } from '../../../lib/departures.js';
-	import { idToName, nameToId } from '../../../data/stations';
-	import Departures from '../../../components/Departures.svelte';
-	import { crossfade } from 'svelte/transition';
-	import { flip } from 'svelte/animate';
+	import { nameToId } from '../../../data/stations';
 
 	if (!localStorage.getItem('favoriteStations')) {
 		localStorage.setItem('favoriteStations', JSON.stringify([]));
@@ -23,24 +18,7 @@
 		localStorage.setItem('favoriteStations', JSON.stringify(favoriteStations));
 	};
 
-	let data = {
-		stog: [],
-		metro: [],
-		train: [],
-		bus: []
-	};
-	const stationId = $page.params.id;
-	const stationName = idToName[stationId];
-
-	const doPoll = () => async () => {
-		data = await fetchDepartures(stationId);
-	};
-	(async () => {
-		data = await fetchDepartures(stationId);
-	})();
-	setInterval(doPoll(), 10000);
-
-	const [send, receive] = crossfade({});
+	export let data;
 </script>
 
 <svelte:head>
@@ -51,9 +29,9 @@
 
 <div class="container">
 	<div>
-		<h1 class="text-5xl inline-block">{stationName}</h1>
-		<button class="inline-block ml-8" type="button" on:click={setFavorite(stationName)}>
-			{#if favoriteStations.includes(nameToId[stationName])}
+		<h1 class="text-5xl inline-block">{data['stationName']}</h1>
+		<button class="inline-block ml-8" type="button" on:click={setFavorite(data['stationName'])}>
+			{#if favoriteStations.includes(nameToId[data['stationName']])}
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
 					<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
 				</svg>
@@ -80,13 +58,11 @@
 				<div id="collapseStog" class="panel-collapse collapse in" style="visibility: visible !important" role="tabpanel" aria-labelledby="headingStog">
 					<!-- <div class="panel-body"> -->
 					<ul class="list-group">
-						{#each data['stog'] as STogDeparture (STogDeparture['index'])}
-							<li class="list-group-item !flex justify-between" animate:flip in:receive={{ key: STogDeparture['direction'] }} out:send={{ key: STogDeparture['direction'] }}>
-								<div class="flex items-center text-4xl">
-									<Badge color={STogDeparture['color']} text={STogDeparture['colorText']} />
-									{STogDeparture['direction']}
-								</div>
-								<Departures departures={STogDeparture['departures']} color={STogDeparture['color']} />
+						{#each data['stog'] as STogDeparture}
+							<li class="list-group-item">
+								<Badge color={STogDeparture['color']} text={STogDeparture['colorText']} />
+								{STogDeparture['direction']}
+								<Time time={STogDeparture['time']} delay={STogDeparture['delay']} />
 							</li>
 						{/each}
 					</ul>
@@ -106,13 +82,11 @@
 				</div>
 				<div id="collapseBus" class="panel-collapse collapse in" style="visibility: visible !important" role="tabpanel" aria-labelledby="headingBus">
 					<ul class="list-group">
-						{#each data['bus'] as BusDeparture (BusDeparture['index'])}
-							<li class="list-group-item !flex justify-between" animate:flip in:receive={{ key: BusDeparture['direction'] }} out:send={{ key: BusDeparture['direction'] }}>
-								<div class="flex items-center text-4xl">
-									<Badge color={BusDeparture['color']} text={BusDeparture['colorText']} wide={true} />
-									{BusDeparture['direction']}
-								</div>
-								<Departures departures={BusDeparture['departures']} color={BusDeparture['color']} />
+						{#each data['bus'] as BusDeparture}
+							<li class="list-group-item">
+								<Badge color={BusDeparture['color']} text={BusDeparture['colorText']} />
+								{BusDeparture['direction']}
+								<Time time={BusDeparture['time']} delay={BusDeparture['delay']} />
 							</li>
 						{/each}
 					</ul>
@@ -131,13 +105,11 @@
 				</div>
 				<div id="collapseTrain" class="panel-collapse collapse in" style="visibility: visible !important" role="tabpanel" aria-labelledby="headingTrain">
 					<ul class="list-group">
-						{#each data['train'] as TrainDeparture (TrainDeparture['index'])}
-							<li class="list-group-item !flex justify-between" animate:flip in:receive={{ key: TrainDeparture['direction'] }} out:send={{ key: TrainDeparture['direction'] }}>
-								<div class="flex items-center text-4xl">
-									<Badge color={TrainDeparture['color']} text={TrainDeparture['colorText']} />
-									{TrainDeparture['direction']}
-								</div>
-								<Departures departures={TrainDeparture['departures']} color={TrainDeparture['color']} />
+						{#each data['train'] as TrainDeparture}
+							<li class="list-group-item">
+								<Badge color={TrainDeparture['color']} text={TrainDeparture['colorText']} />
+								{TrainDeparture['direction']}
+								<Time time={TrainDeparture['time']} delay={TrainDeparture['delay']} />
 							</li>
 						{/each}
 					</ul>
@@ -156,13 +128,34 @@
 				</div>
 				<div id="collapseMetro" class="panel-collapse collapse in" style="visibility: visible !important" role="tabpanel" aria-labelledby="headingMetro">
 					<ul class="list-group">
-						{#each data['metro'] as MetroDeparture (MetroDeparture['index'])}
-							<li class="list-group-item !flex justify-between" animate:flip in:receive={{ key: MetroDeparture['direction'] }} out:send={{ key: MetroDeparture['direction'] }}>
-								<div class="flex items-center text-4xl">
-									<Badge color={MetroDeparture['color']} text={MetroDeparture['colorText']} />
-									{MetroDeparture['direction']}
-								</div>
-								<Departures departures={MetroDeparture['departures']} color={MetroDeparture['color']} />
+						{#each data['metro'] as MetroDeparture}
+							<li class="list-group-item">
+								<Badge color={MetroDeparture['color']} text={MetroDeparture['colorText']} />
+								{MetroDeparture['direction']}
+								<Time time={MetroDeparture['time']} delay={MetroDeparture['delay']} />
+							</li>
+						{/each}
+					</ul>
+				</div>
+			</div>
+		{/if}
+		{#if data['ferry'].length > 0}
+			<div class="panel panel-default">
+				<div class="panel-heading active" role="tab" id="headingFerry">
+					<h2 class="panel-title">
+						<a role="button" data-toggle="collapse" href="#collapseFerry" aria-expanded="true" aria-controls="collapseFerry">
+							<i style="vertical-align: middle; display: inline-block; height: 30px; width: 30px; background-image: url('/bus.svg')" />
+							Ferry
+						</a>
+					</h2>
+				</div>
+				<div id="collapseFerry" class="panel-collapse collapse in" style="visibility: visible !important" role="tabpanel" aria-labelledby="headingFerry">
+					<ul class="list-group">
+						{#each data['ferry'] as FerryDeparture}
+							<li class="list-group-item">
+								<Badge color={FerryDeparture['color']} text={FerryDeparture['colorText']} />
+								{FerryDeparture['direction']}
+								<Time time={FerryDeparture['time']} delay={FerryDeparture['delay']} />
 							</li>
 						{/each}
 					</ul>
