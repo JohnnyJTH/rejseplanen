@@ -26,6 +26,7 @@ const TrainColors = {
     'TOG': '#767676',
     'REG': '#50b748',
     'LYN': '#FCBB58',
+    'IC': '#EE4230',
 }
 
 export async function fetchDepartures(stationId) {
