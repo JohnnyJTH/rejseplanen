@@ -8,13 +8,21 @@
 	import { crossfade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
+	// Create an empty array if the local storage item does not exist
 	if (!localStorage.getItem('favoriteStations')) {
 		localStorage.setItem('favoriteStations', JSON.stringify([]));
 	}
+
+	// If the local storage item exists, but is not an array, reset it
+	if (!Array.isArray(localStorage.getItem('favoriteStations'))) {
+		localStorage.setItem('favoriteStations', JSON.stringify([]));
+	}
+
+	// Get the favoriteStations array from local storage
 	let favoriteStations = JSON.parse(localStorage.getItem('favoriteStations'));
 
 	const setFavorite = (stationName) => {
-		let stationId = nameToId[stationName];
+		const stationId = nameToId[stationName];
 		if (favoriteStations.includes(stationId)) {
 			favoriteStations = favoriteStations.filter((id) => id !== stationId);
 		} else {
