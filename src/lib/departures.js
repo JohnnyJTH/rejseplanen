@@ -1,6 +1,7 @@
 const STogColors = {
     "A": "#00a7e3",
     "B": "#55ab26",
+    "Bx": "#A6CE39",
     "C": "#f29400",
     "E": "#9874c3",
     "F": "#ffc20e",
